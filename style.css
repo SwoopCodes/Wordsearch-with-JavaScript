@@ -1,0 +1,14 @@
+main{
+    margin-left: 25%;
+    margin-right: 25%;
+}
+table{
+    border-style: solid;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+td{
+    border-style: solid;
+    padding: 1.5rem;
+    font-size: 2rem;
+}
