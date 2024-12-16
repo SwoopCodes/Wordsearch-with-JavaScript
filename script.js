@@ -34,5 +34,6 @@ for(letter in word){
 tableCells.forEach(cell => {
     cell.addEventListener("click", function(){
         selected += cell.textContent
+        console.log(selected)
     })
 });
