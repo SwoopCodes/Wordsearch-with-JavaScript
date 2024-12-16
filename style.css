@@ -1,13 +1,14 @@
-main{
+main{ /* Indents main content center*/
     margin-left: 25%;
     margin-right: 25%;
 }
-table{
+table{ /* adds styling to table*/
     border-style: solid;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-collapse: collapse;
 }
 
-td{
+td{ /* adds styling to table cells*/
     border-style: solid;
     padding: 1.5rem;
     font-size: 2rem;
