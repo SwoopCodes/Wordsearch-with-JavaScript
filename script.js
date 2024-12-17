@@ -1,14 +1,6 @@
 
-const word = "HELLO"; // declares word that needs to be found
-
-let selected = "" // selected letters by user
-
+const word = "XAVIER"; // declares word that needs to be found
 const placeholders = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // letters of the alphabet to place randomly across the board
-
-
-let xCoordinate = 0; // x coordinates of table
-let yCoordinate = 0; // y coordinates of table
-
 const tableCells = document.querySelectorAll("td"); // finds all TD elemends
 
 // places random letter into every cell
@@ -40,7 +32,7 @@ while(placed == false){
 
             else if(xDecider + word.length <= 7){ // if word can fit in table, place into table
                 for(letter in word){
-                    let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                    let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
                     places.textContent = word[i]; // places each letter based on i variable
                     xDecider++; // increases x coordinate
                     i++;
@@ -58,7 +50,7 @@ while(placed == false){
 
         else if(xDecider + word.length <= 7 && yDecider + word.length <= 7){ // if word can fit in table, place into table
             for(letter in word){
-                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
                 places.textContent = word[i]; // places each letter based on i variable
                 xDecider++; // increases x coordinate
                 yDecider++ // increases y coordinate
@@ -77,7 +69,7 @@ while(placed == false){
 
         else if(xDecider + word.length <= 7 && yDecider - word.length >= 0){
             for(letter in word){
-                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
                 places.textContent = word[i]; // places each letter based on i variable
                 xDecider++; // increases x coordinate
                 yDecider--
@@ -96,7 +88,7 @@ while(placed == false){
 
         else if(yDecider + word.length <= 7){ // if word can fit in table, place into table
             for(letter in word){
-                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
                 places.textContent = word[i]; // places each letter based on i variable
                 yDecider++; // increases x coordinate
                 i++;
@@ -106,7 +98,7 @@ while(placed == false){
         }
         break
 
-    case 4: // places text vertical top
+        case 4: // places text vertical top
         console.log("case 4");
         if(yDecider + word.length > 8){ // if the word lenght exceeds table lenght, don't place
             console.log("couldn't place");
@@ -118,7 +110,7 @@ while(placed == false){
 
         else{ // if word can fit in table, place into table
             for(letter in word){
-                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
                 places.textContent = word[i]; // places each letter based on i variable
                 yDecider--; // increases x coordinate
                 i++;
@@ -128,5 +120,34 @@ while(placed == false){
         }
         break
     }
-
 }
+
+let origin = null; // Stores the original clicked cell's coordinates
+let selectedCells = ""; // Stores the selected cell contents
+
+tableCells.forEach(cell => {
+    cell.addEventListener("click", () => {
+        const [col, row] = cell.id.split("-").map(Number);
+
+        // If no origin is set, set it to the first clicked cell
+        if (!origin) {
+            origin = { row, col };  // Set origin coordinates
+            selectedCells += cell.textContent;  // Append cell text to selectedCells
+            cell.classList.add("active");  // Mark the origin cell as active
+            console.log(`Origin set to: ${cell.id}`);
+            return;
+        }
+
+        // Check if the clicked cell is adjacent to the origin cell
+        const isAdjacent = Math.abs(row - origin.row) <= 1 && Math.abs(col - origin.col) <= 1;
+
+        if (isAdjacent) {
+            selectedCells += cell.textContent;  // Append cell text to selectedCells
+            cell.classList.add("active");  // Mark the clicked cell as active
+            origin = { row, col };  // Update the origin to the current cell
+            console.log(`Clicked and added: ${cell.id}, Selected: ${selectedCells}`);
+        } else {
+            console.log("Only adjacent cells can be clicked!");
+        }
+    });
+});

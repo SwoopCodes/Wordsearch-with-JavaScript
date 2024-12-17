@@ -13,3 +13,7 @@ td{ /* adds styling to table cells*/
     padding: 1.5rem;
     font-size: 2rem;
 }
+
+.active{
+    background-color: green;
+}
