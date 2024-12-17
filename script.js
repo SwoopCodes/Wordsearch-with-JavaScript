@@ -108,11 +108,15 @@ while(placed == false){
 
     case 4: // places text vertical top
         console.log("case 4");
-        if(yDecider + word.length < 0){ // if the word lenght exceeds table lenght, don't place
+        if(yDecider + word.length > 8){ // if the word lenght exceeds table lenght, don't place
             console.log("couldn't place");
         }
 
-        else if(yDecider + word.length >= 7){ // if word can fit in table, place into table
+        if (yDecider - word.length < -1){
+            console.log("couldn't place");
+        }
+
+        else{ // if word can fit in table, place into table
             for(letter in word){
                 let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
                 places.textContent = word[i]; // places each letter based on i variable
