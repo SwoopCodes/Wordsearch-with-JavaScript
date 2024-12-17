@@ -18,21 +18,111 @@ tableCells.forEach(cell => {
 });
 
 
-let i = 0; // i 
+let placed = false; // variable used to break out of while loop
 
-// places word into table
-// to be changed later
-for(letter in word){
-    let places = document.getElementById(`x${xCoordinate}y${yCoordinate}`); // gets x and y coordiantes of table
-    places.textContent = word[i]; // places each letter based on i variable
-    xCoordinate++; // increases x coordinate
-    i++;
+
+//This loop places word into table
+//Contains code for placing diagonally, vertically and horizontally
+while(placed == false){
+    let decider = Math.floor(Math.random() * 5); // variable to choose which direction the word will go
+    let i = 0 // used to iterate over word
+    let xDecider = Math.floor(Math.random() * 8); // decides starting x coordinate
+    let yDecider = Math.floor(Math.random() * 8); // decides starting y coordinate
+    console.log(xDecider);
+    console.log(yDecider);
+
+    switch(decider){
+        case 0: // places word horizontally
+            console.log("case 0");
+            if(xDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
+                console.log("couldn't place");
+            }
+
+            else if(xDecider + word.length <= 7){ // if word can fit in table, place into table
+                for(letter in word){
+                    let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                    places.textContent = word[i]; // places each letter based on i variable
+                    xDecider++; // increases x coordinate
+                    i++;
+                    placed = true; // loop finished
+                    console.log("placed 0");
+                }
+            }
+        break
+
+    case 1: // places word bottom diagonally
+        console.log("case 1");
+        if(xDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
+            console.log("couldn't place");
+        }
+
+        else if(xDecider + word.length <= 7 && yDecider + word.length <= 7){ // if word can fit in table, place into table
+            for(letter in word){
+                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                places.textContent = word[i]; // places each letter based on i variable
+                xDecider++; // increases x coordinate
+                yDecider++ // increases y coordinate
+                i++;
+                placed = true; // loop finished
+                console.log("placed 1");
+            }
+        }
+        break
+
+    case 2: // places word bottom diagonally
+        console.log("case 2");
+        if(xDecider + word.length > 7 && yDecider - word.length < 0){
+            console.log("couldn't place");
+        }
+
+        else if(xDecider + word.length <= 7 && yDecider - word.length >= 0){
+            for(letter in word){
+                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                places.textContent = word[i]; // places each letter based on i variable
+                xDecider++; // increases x coordinate
+                yDecider--
+                i++;
+                placed = true; // loop finished
+                console.log("placed 2");
+            }
+        }
+        break
+
+    case 3: // places text vertical down
+        console.log("case 3");
+        if(yDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
+            console.log("couldn't place");
+        }
+
+        else if(yDecider + word.length <= 7){ // if word can fit in table, place into table
+            for(letter in word){
+                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                places.textContent = word[i]; // places each letter based on i variable
+                yDecider++; // increases x coordinate
+                i++;
+                placed = true; // loop finished
+                console.log("placed 3");
+            }
+        }
+        break
+
+    case 4: // places text vertical top
+        console.log("case 4");
+        if(yDecider + word.length < 0){ // if the word lenght exceeds table lenght, don't place
+            console.log("couldn't place");
+        }
+
+        else if(yDecider + word.length >= 7){ // if word can fit in table, place into table
+            for(letter in word){
+                let places = document.getElementById(`x${xDecider}y${yDecider}`); // gets x and y coordiantes of table
+                places.textContent = word[i]; // places each letter based on i variable
+                yDecider--; // increases x coordinate
+                i++;
+                placed = true; // loop finished
+                console.log("placed 4");
+            }
+        }
+        break
+    }
+
 }
-
-//adds event listener to every cell
-// on click - append cell data into 'selected' variable
-tableCells.forEach(cell => {
-    cell.addEventListener("click", function(){
-        selected += cell.textContent
-    })
-});
