@@ -2,6 +2,11 @@
 const word = "XAVIER"; // declares word that needs to be found
 const placeholders = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // letters of the alphabet to place randomly across the board
 const tableCells = document.querySelectorAll("td"); // finds all TD elemends
+const resetButton = document.getElementById("resetButton"); // finds reset button
+const submitButton = document.getElementById("submitButton"); // finds submit button
+const wordToFind = document.getElementById("findWord"); // finds placeholder word on left hand side
+
+wordToFind.textContent = word;
 
 // places random letter into every cell
 tableCells.forEach(cell => {
@@ -14,7 +19,7 @@ let placed = false; // variable used to break out of while loop
 
 
 //This loop places word into table
-//Contains code for placing diagonally, vertically and horizontally
+//Contains code for placing diagonally, vertically and horizontally 
 while(placed == false){
     let decider = Math.floor(Math.random() * 5); // variable to choose which direction the word will go
     let i = 0 // used to iterate over word
@@ -42,7 +47,7 @@ while(placed == false){
             }
         break
 
-    case 1: // places word bottom diagonally
+    case 1: // places word top diagonally
         console.log("case 1");
         if(xDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
             console.log("couldn't place");
@@ -98,7 +103,7 @@ while(placed == false){
         }
         break
 
-        case 4: // places text vertical top
+    case 4: // places text vertical top
         console.log("case 4");
         if(yDecider + word.length > 8){ // if the word lenght exceeds table lenght, don't place
             console.log("couldn't place");
@@ -122,8 +127,15 @@ while(placed == false){
     }
 }
 
+
+// This section adds an event listner to each cell of the table
+// After choosing a cell, an origin is picked and it checks if a nearby cell has been clicked
+// if a cell outside of the most recently chosen cell, it doesn't allow the user to select it
+
+let showWord = document.getElementById("selectedLetters");
 let origin = null; // Stores the original clicked cell's coordinates
 let selectedCells = ""; // Stores the selected cell contents
+
 
 tableCells.forEach(cell => {
     cell.addEventListener("click", () => {
@@ -133,9 +145,11 @@ tableCells.forEach(cell => {
         if (!origin) {
             origin = { row, col };  // Set origin coordinates
             selectedCells += cell.textContent;  // Append cell text to selectedCells
+            showWord.textContent = selectedCells; // Displays selected letters below table
             cell.classList.add("active");  // Mark the origin cell as active
             console.log(`Origin set to: ${cell.id}`);
             return;
+
         }
 
         // Check if the clicked cell is adjacent to the origin cell
@@ -143,11 +157,38 @@ tableCells.forEach(cell => {
 
         if (isAdjacent) {
             selectedCells += cell.textContent;  // Append cell text to selectedCells
+            showWord.textContent = selectedCells; // Displays selected letters below table
             cell.classList.add("active");  // Mark the clicked cell as active
             origin = { row, col };  // Update the origin to the current cell
             console.log(`Clicked and added: ${cell.id}, Selected: ${selectedCells}`);
-        } else {
+            
+        } 
+        
+        else {
             console.log("Only adjacent cells can be clicked!");
         }
     });
 });
+
+// Reset button
+// on click, reset selected values to original
+resetButton.addEventListener("click", () => {
+    origin = null;
+    selectedCells = "";
+    showWord.textContent = "";
+    tableCells.forEach(cell => {
+        cell.classList.remove("active");
+    })
+});
+
+// submit button
+// on click, check if the correct word was selected
+submitButton.addEventListener("click", () =>{
+    if(selectedCells == word){
+        console.log("correct!");
+    }
+    else{
+        console.log("incorrect");
+    }
+})
+

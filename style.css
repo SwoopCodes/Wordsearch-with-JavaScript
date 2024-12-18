@@ -1,11 +1,17 @@
 main{ /* Indents main content center*/
-    margin-left: 25%;
-    margin-right: 25%;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#leftBar{
+    float: left;
+    margin-left: 4%;
 }
 table{ /* adds styling to table*/
     border-style: solid;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     border-collapse: collapse;
+    margin-top: 1%;
+    margin-left: 14%;
+    float: left;
 }
 
 td{ /* adds styling to table cells*/
@@ -14,6 +20,32 @@ td{ /* adds styling to table cells*/
     font-size: 2rem;
 }
 
+td:hover{
+    cursor: pointer;
+}
+
 .active{
     background-color: green;
 }
+
+#selectedLetters{
+
+    text-align: center;
+    font-size: 2.2rem;
+}
+
+#submitButton{
+
+    font-size: 2.2rem;
+    margin-left: 40%;
+    float: left;
+}
+
+#resetButton{
+
+    font-size: 2.2rem;
+    margin-right: 40%;
+    float: right;
+}
+
+
