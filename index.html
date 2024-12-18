@@ -10,6 +10,12 @@
 
     <body>
         <main>
+
+            <div id="leftBar">
+                <h1> Word/s to find:</h1>
+                <p style="text-align: center; font-size: 1.7rem;" id="findWord"></p>
+            </div>
+
             <table>
                 <tr>
                     <!-- Row 0 -->
@@ -106,7 +112,12 @@
                     <td id="6-7"></td> <!-- X6, Y7 -->
                     <td id="7-7"></td> <!-- X7, Y7 -->
                 </tr>
-            </table> 
+            </table>
+            <div style="clear: both;"></div>
+            <p id="selectedLetters"></p>
+
+            <button id="submitButton">Submit</button>
+            <button id="resetButton">Reset</button>
         </main>
 
     <script src="script.js"> </script> <!-- JS script-->
