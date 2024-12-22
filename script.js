@@ -259,6 +259,11 @@ resetButton.addEventListener("click", () => {
     origin = null;
     selectedCells = "";
     showWord.textContent = "";
+    isDiagonalTop = false;
+    isDiagonalBottom = false;
+    isHorizontal = false;
+    isVerticalTop = false;
+    isVerticalBottom = false;
     tableCells.forEach(cell => {
         cell.classList.remove("active");
     })
@@ -266,16 +271,32 @@ resetButton.addEventListener("click", () => {
 
 // submit button
 // on click, check if the correct word was selected
+// performs a reset in both cases
 submitButton.addEventListener("click", () =>{
     if(selectedCells == word){
         showWord.textContent = `${selectedCells} is correct!!`;
         origin = null;
         selectedCells = "";
+        isDiagonalTop = false;
+        isDiagonalBottom = false;
+        isHorizontal = false;
+        isVerticalTop = false;
+        isVerticalBottom = false;
         tableCells.forEach(cell => {
             cell.classList.remove("active");
         })
     }
     else{
-        console.log(`${selectedCells} is incorrect!`);
+        showWord.textContent = `${selectedCells} is incorrect`;
+        origin = null;
+        selectedCells = "";
+        isDiagonalTop = false;
+        isDiagonalBottom = false;
+        isHorizontal = false;
+        isVerticalTop = false;
+        isVerticalBottom = false;
+        tableCells.forEach(cell => {
+            cell.classList.remove("active");
+        })
     }
 })
