@@ -4,25 +4,43 @@ const placeholders = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // letters of the alphabet to
 const tableCells = document.querySelectorAll("td"); // finds all TD elemends
 const resetButton = document.getElementById("resetButton"); // finds reset button
 const submitButton = document.getElementById("submitButton"); // finds submit button
-const wordToFind = document.getElementById("findWord"); // finds placeholder word on left hand side
+const wordToFind1 = document.getElementById("findWord1"); // finds placeholder word1 on left hand side
+const wordToFind2 = document.getElementById("findWord2"); // finds placeholder word2 on left hand side
+const wordToFind3 = document.getElementById("findWord3"); // finds placeholder word2 on left hand side
 let showWord = document.getElementById("selectedLetters"); // finds text element below table
-
 
 //generates a random number to be used as an index for choosing a random word
 let wordChooser1 = Math.floor(Math.random() * word.length);
 let wordChooser2 = Math.floor(Math.random() * word.length);
+let wordChooser3 = Math.floor(Math.random() * word.length);
 
 // if both random numbers are the same, regenerate number
-while (wordChooser1 == wordChooser2){
-    wordChooser2 = Math.floor(Math.random() * word.length);
+while (wordChooser1 == wordChooser2 || wordChooser1 == wordChooser3){
+    wordChooser1 = Math.floor(Math.random() * word.length);
+    console.log("re-roll wordChooser1")
 }
+
+while (wordChooser2 == wordChooser1 || wordChooser2 == wordChooser3){
+    wordChooser2 = Math.floor(Math.random() * word.length);
+    console.log("re-roll wordChooser2")
+}
+
+while (wordChooser3 == wordChooser2 || wordChooser3 == wordChooser1){
+    wordChooser3 = Math.floor(Math.random() * word.length);
+    console.log("re-roll wordChooser3")
+}
+
+
 
 //chooses which words to be used in list
 const word1 = word[wordChooser1];
 const word2 = word[wordChooser2];
+const word3 = word[wordChooser3];
 
 //places words on the screen's sidebar
-wordToFind.textContent = `${word[wordChooser1]} ${word[wordChooser2]} `;
+wordToFind1.textContent = word1;
+wordToFind2.textContent = word2;
+wordToFind3.textContent = word3;
 
 
 // This section fills the table with random letters
@@ -39,8 +57,7 @@ tableCells.forEach(cell => {
 
 let placedTiles = []; // Array to store coordinates of placed letters
 
-// Function to check and place a word
-function tryPlaceWord(word) {
+function tryPlaceWord(word) { // Function to check and place a word
     let placed = false;
 
     while (placed == false) {
@@ -145,11 +162,14 @@ function tryPlaceWord(word) {
     }
 }
 
-// Place both words
+// Place words
 tryPlaceWord(word1);
 console.log(`Word1 "${word1}" placed successfully.`);
 
 tryPlaceWord(word2);
+console.log(`Word2 "${word2}" placed successfully.`);
+
+tryPlaceWord(word3);
 console.log(`Word2 "${word2}" placed successfully.`);
 
 
@@ -160,6 +180,7 @@ console.log(`Word2 "${word2}" placed successfully.`);
 
 let origin = null; // Stores the original clicked cell's coordinates
 let selectedCells = ""; // Stores the selected cell contents
+let wordCoordinate = [];
 
 let isDiagonalTop = false;
 let isDiagonalBottom = false;
@@ -169,19 +190,21 @@ let isVerticalBottom = false;
 
 tableCells.forEach(cell => {
     cell.addEventListener("click", () => {
-        const [col, row] = cell.id.split("-").map(Number);
-
+        const [col, row] = cell.id.split("-").map(Number); // splits html id to individually store column and row
+        
         // If no origin is set, set it to the first clicked cell
         if (!origin) {
             origin = { col, row };  // Set origin coordinates
             selectedCells += cell.textContent;  // Append cell text to selectedCells
             showWord.textContent = selectedCells; // Displays selected letters below table
             cell.classList.add("active");  // Mark the origin cell as active
+            wordCoordinate.push(`${col}-${row}`);
             console.log(`Origin set to: ${cell.id}`);
+            
             return;
 
         }
-
+        
         // Check if the clicked cell is adjacent to the origin cell
         if (Math.abs(row - origin.row) <= 1 && Math.abs(col - origin.col) <= 1) {
 
@@ -232,7 +255,7 @@ tableCells.forEach(cell => {
     
             }
             
-            if(col - origin.col == 0 && row - origin.row == 1 // Diagonal Bottom selector
+            if(col - origin.col == 0 && row - origin.row == 1 // vertical Bottom selector
                 && isDiagonalTop == false
                 && isVerticalTop == false
                 && isHorizontal == false
@@ -248,7 +271,7 @@ tableCells.forEach(cell => {
     
             }
 
-            if(col - origin.col == 1 && row - origin.row == 0 // Diagonal Bottom selector
+            if(col - origin.col == 1 && row - origin.row == 0 // horizontal selector
                 && isDiagonalTop == false
                 && isVerticalTop == false
                 && isVerticalBottom == false
@@ -272,7 +295,7 @@ tableCells.forEach(cell => {
                     showWord.textContent = "can't select letters backwards"
                 }
             
-
+        wordCoordinate.push(`${col}-${row}`); // appends selected cells into array
         } 
         
         else { // adjacent letters must be selected
@@ -292,27 +315,46 @@ resetButton.addEventListener("click", () => {
     isHorizontal = false;
     isVerticalTop = false;
     isVerticalBottom = false;
+    wordCoordinate = [];
     tableCells.forEach(cell => {
         cell.classList.remove("active");
     })
 });
 
+let correctWords = 0;
+
 // submit button
 // on click, check if the correct word was selected
 // performs a reset in both cases
 submitButton.addEventListener("click", () =>{
-    if(selectedCells == word1 || selectedCells == word2){
+    if(selectedCells == word1 || selectedCells == word2 || selectedCells == word3){
+        correctWords++; //each correct words will increment counter
+        console.log(correctWords);
+    if(correctWords == 3){ // once all words are found, display you win
+        console.log("you win")
+        }
+        if(selectedCells == word1){ // if word 1 is selected and correct, change appropriate word in side bar to green background
+            wordToFind1.classList.add("activeCorrect");
+        }
+        else if(selectedCells == word2){ // if word 2 is selected and correct, change appropriate word in side bar to green background
+            wordToFind2.classList.add("activeCorrect");
+        }
+        else if(selectedCells == word3){ // if word 3 is selected and correct, change appropriate word in side bar to green background
+            wordToFind3.classList.add("activeCorrect");
+        }
         showWord.textContent = `${selectedCells} is correct!!`;
-        origin = null;
+        origin = null; 
         selectedCells = "";
+        for (let coord in wordCoordinate) { // correct letters that were chosen will stay green on the board
+            let toSelect = document.getElementById(wordCoordinate[coord]);
+            if (toSelect) toSelect.classList.add("activeCorrect");
+        }
+        wordCoordinate = [];
         isDiagonalTop = false;
         isDiagonalBottom = false;
         isHorizontal = false;
         isVerticalTop = false;
         isVerticalBottom = false;
-        tableCells.forEach(cell => {
-            cell.classList.remove("active");
-        })
     }
     else{
         showWord.textContent = `${selectedCells} is incorrect`;
@@ -323,8 +365,6 @@ submitButton.addEventListener("click", () =>{
         isHorizontal = false;
         isVerticalTop = false;
         isVerticalBottom = false;
-        tableCells.forEach(cell => {
-            cell.classList.remove("active");
-        })
+        wordCoordinate = [];
     }
 })
