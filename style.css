@@ -28,6 +28,9 @@ td:hover{
     background-color: green;
 }
 
+.activeCorrect{
+    background-color: greenyellow;
+}
 #selectedLetters{
 
     text-align: center;
