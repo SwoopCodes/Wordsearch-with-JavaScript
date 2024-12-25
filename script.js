@@ -1,5 +1,5 @@
 
-const word = "EXTRA"; // declares word that needs to be found
+const word = ["EXTRA", "FISH", "SNAKE", "MUTE", "TOOL"]; // declares word that needs to be found
 const placeholders = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // letters of the alphabet to place randomly across the board
 const tableCells = document.querySelectorAll("td"); // finds all TD elemends
 const resetButton = document.getElementById("resetButton"); // finds reset button
@@ -7,123 +7,151 @@ const submitButton = document.getElementById("submitButton"); // finds submit bu
 const wordToFind = document.getElementById("findWord"); // finds placeholder word on left hand side
 let showWord = document.getElementById("selectedLetters"); // finds text element below table
 
-wordToFind.textContent = word;
 
-// places random letter into every cell
+//generates a random number to be used as an index for choosing a random word
+let wordChooser1 = Math.floor(Math.random() * word.length);
+let wordChooser2 = Math.floor(Math.random() * word.length);
+
+// if both random numbers are the same, regenerate number
+while (wordChooser1 == wordChooser2){
+    wordChooser2 = Math.floor(Math.random() * word.length);
+}
+
+//chooses which words to be used in list
+const word1 = word[wordChooser1];
+const word2 = word[wordChooser2];
+
+//places words on the screen's sidebar
+wordToFind.textContent = `${word[wordChooser1]} ${word[wordChooser2]} `;
+
+
+// This section fills the table with random letters
+// simple and effective
 tableCells.forEach(cell => {
     let randomNum = Math.floor(Math.random() * 26) // generates random number between 0 and 26
     cell.textContent = placeholders[randomNum] // places letters into table cell
 });
 
 
-let placed = false; // variable used to break out of while loop
+// This section of the script places the words that need to be found by the user into the table
+// In this itteration, it runs a check in the switch statements to see if there are any conflicts with previously placed words
+// There is definitely many flaws like it only supporting two fixed words but as a personal project I'm contempt
 
-//This loop places word into table
-//Contains code for placing diagonally, vertically and horizontally 
-while(placed == false){
-    let decider = Math.floor(Math.random() * 5); // variable to choose which direction the word will go
-    let i = 0 // used to iterate over word
-    let xDecider = Math.floor(Math.random() * 8); // decides starting x coordinate
-    let yDecider = Math.floor(Math.random() * 8); // decides starting y coordinate
+let placedTiles = []; // Array to store coordinates of placed letters
 
-    switch(decider){
-        case 0: // places word horizontally
-            console.log("case 0");
-            if(xDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
-                console.log("couldn't place");
-            }
+// Function to check and place a word
+function tryPlaceWord(word) {
+    let placed = false;
 
-            else if(xDecider + word.length <= 7){ // if word can fit in table, place into table
-                for(letter in word){
-                    let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
-                    places.textContent = word[i]; // places each letter based on i variable
-                    xDecider++; // increases x coordinate
-                    i++;
-                    placed = true; // loop finished
-                    console.log("placed 0");
+    while (placed == false) {
+        let decider = Math.floor(Math.random() * 5); // Random direction (0-4)
+        let xDecider = Math.floor(Math.random() * 8); // Random x coordinate
+        let yDecider = Math.floor(Math.random() * 8); // Random y coordinate
+
+        console.log(`Trying to place "${word}" at starting coordinates (${xDecider}, ${yDecider}) in direction ${decider}`);
+
+        let canPlace = true;
+        let coordinates = []; // Holds coordinates for this word
+
+        switch (decider) {
+ 
+            case 0: // Horizontal placement
+                if (xDecider + word.length <= 7) { // ensures that the word from it's starting coordinates fits into table
+                    for (let i = 0; i < word.length; i++) { 
+                        let coord = `${xDecider + i}-${yDecider}`;
+                        if (placedTiles.includes(coord)) { // during loop, check if the the current coordinate is the same as previously placed word
+                            canPlace = false;
+                            break; // if conflict occurs, break out of for loop and don't continue
+                        }
+                        coordinates.push(coord); // appends coordinates to be used for placing
+                    }
+                } else {
+                    canPlace = false;
                 }
-            }
-        break
+                break;
 
-    case 1: // places word top diagonally
-        console.log("case 1");
-        if(xDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
-            console.log("couldn't place");
+            case 1: // Diagonal (top-left to bottom-right)
+                if (xDecider + word.length <= 7 && yDecider + word.length <= 7) { // ensures word fits into table on x & y coordinatees
+                    for (let i = 0; i < word.length; i++) {
+                        let coord = `${xDecider + i}-${yDecider + i}`;
+                        if (placedTiles.includes(coord)) { // during loop, check if the the current coordinate is the same as previously placed word
+                            canPlace = false;
+                            break; // if conflict occurs, break out of for loop and don't continue
+                        }
+                        coordinates.push(coord); // appends coordinates to be used for placing
+                    }
+                } else {
+                    canPlace = false;
+                }
+                break;
+
+            case 2: // Diagonal (bottom-left to top-right)
+                if (xDecider + word.length <= 7 && yDecider - word.length >= 0) { // ensures word fits into table on x & y coordinatees
+                    for (let i = 0; i < word.length; i++) {
+                        let coord = `${xDecider + i}-${yDecider - i}`;
+                        if (placedTiles.includes(coord)) { // during loop, check if the the current coordinate is the same as previously placed word
+                            canPlace = false;
+                            break; // if conflict occurs, break out of for loop and don't continue
+                        }
+                        coordinates.push(coord); // appends coordinates to be used for placing
+                    }
+                } else {
+                    canPlace = false;
+                }
+                break;
+
+            case 3: // Vertical (top to bottom)
+                if (yDecider + word.length <= 7) { // ensures word fits into table on x & y coordinatees
+                    for (let i = 0; i < word.length; i++) {
+                        let coord = `${xDecider}-${yDecider + i}`;
+                        if (placedTiles.includes(coord)) { // during loop, check if the the current coordinate is the same as previously placed word
+                            canPlace = false;
+                            break; // if conflict occurs, break out of for loop and don't continue
+                        }
+                        coordinates.push(coord); // appends coordinates to be used for placing
+                    }
+                } else {
+                    canPlace = false;
+                }
+                break;
+
+            case 4: // Vertical (bottom to top)
+                if (yDecider - word.length >= 0) { // ensures word fits into table on x & y coordinatees
+                    for (let i = 0; i < word.length; i++) {
+                        let coord = `${xDecider}-${yDecider - i}`;
+                        if (placedTiles.includes(coord)) { // during loop, check if the the current coordinate is the same as previously placed word
+                            canPlace = false;
+                            break; // if conflict occurs, break out of for loop and don't continue
+                        }
+                        coordinates.push(coord); // appends coordinates to be used for placing
+                    }
+                } else {
+                    canPlace = false;
+                }
+                break;
         }
 
-        else if(xDecider + word.length <= 7 && yDecider + word.length <= 7){ // if word can fit in table, place into table
-            for(letter in word){
-                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
-                places.textContent = word[i]; // places each letter based on i variable
-                xDecider++; // increases x coordinate
-                yDecider++ // increases y coordinate
-                i++;
-                placed = true; // loop finished
-                console.log("placed 1");
-            }
+        if (canPlace) { // canPlace = true
+            coordinates.forEach((coord, index) => {
+                placedTiles.push(coord); // pushes coordinate into currently placed tiles to be checked on the next pass for conflicts
+                let cell = document.getElementById(coord); // retrieves cell id in which the letter will be placed
+                cell.textContent = word[index]; // places letter into cell based on the word's index
+                console.log(`Placed "${word[index]}" at ${coord}`);
+            });
+            placed = true; //ends loop
+        } else {
+            console.log(`Failed to place "${word}", retrying...`);
         }
-        break
-
-    case 2: // places word bottom diagonally
-        console.log("case 2");
-        if(xDecider + word.length > 7 && yDecider - word.length < 0){
-            console.log("couldn't place");
-        }
-
-        else if(xDecider + word.length <= 7 && yDecider - word.length >= 0){
-            for(letter in word){
-                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
-                places.textContent = word[i]; // places each letter based on i variable
-                xDecider++; // increases x coordinate
-                yDecider--
-                i++;
-                placed = true; // loop finished
-                console.log("placed 2");
-            }
-        }
-        break
-
-    case 3: // places word vertical down
-        console.log("case 3");
-        if(yDecider + word.length > 7){ // if the word lenght exceeds table lenght, don't place
-            console.log("couldn't place");
-        }
-
-        else if(yDecider + word.length <= 7){ // if word can fit in table, place into table
-            for(letter in word){
-                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
-                places.textContent = word[i]; // places each letter based on i variable
-                yDecider++; // increases x coordinate
-                i++;
-                placed = true; // loop finished
-                console.log("placed 3");
-            }
-        }
-        break
-
-    case 4: // places word vertical top
-        console.log("case 4");
-        if(yDecider + word.length > 8){ // if the word lenght exceeds table lenght in the x direction, don't place
-            console.log("couldn't place");
-        }
-
-        if (yDecider - word.length < -1){ // if the word lenght exceeds table lenght in the y direction, don't place
-            console.log("couldn't place");
-        }
-
-        else{ // if word can fit in table, place into table
-            for(letter in word){
-                let places = document.getElementById(`${xDecider}-${yDecider}`); // gets x and y coordiantes of table
-                places.textContent = word[i]; // places each letter based on i variable
-                yDecider--; // increases x coordinate
-                i++;
-                placed = true; // loop finished
-                console.log("placed 4");
-            }
-        }
-        break
     }
 }
+
+// Place both words
+tryPlaceWord(word1);
+console.log(`Word1 "${word1}" placed successfully.`);
+
+tryPlaceWord(word2);
+console.log(`Word2 "${word2}" placed successfully.`);
+
 
 
 // This section of the code is used for selecting the letters
@@ -273,7 +301,7 @@ resetButton.addEventListener("click", () => {
 // on click, check if the correct word was selected
 // performs a reset in both cases
 submitButton.addEventListener("click", () =>{
-    if(selectedCells == word){
+    if(selectedCells == word1 || selectedCells == word2){
         showWord.textContent = `${selectedCells} is correct!!`;
         origin = null;
         selectedCells = "";
