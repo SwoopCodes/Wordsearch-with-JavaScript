@@ -1,5 +1,10 @@
 
-const word = ["EXTRA", "FISH", "SNAKE", "MUTE", "TOOL"]; // declares word that needs to be found
+const word = ["EXTRA", "FISH", "SNAKE", "MUTE", "TOOL", "BOOK", "CAVE", "HILL", "TREE", "FARM", "SHOE", "BELL", "FORK", "GATE", "WIND", 
+                "CORN", "GRASS", "SNAIL", "PLANT", "HOUSE", "APPLE", "BRICK", "CLOUD", "TRAIL", 
+                "FLAME", "RIVER", "STARS", "CARGO", "GRAPE", "MOUSE", "CHAIR", "BLADE", "CROWN", 
+                "FENCE", "BREAD", "SHELL", "FLOOR", "PLANE", "WHALE", "PLATE", "BRUSH", "DRILL", 
+                "SWING", "BRANCH" ]; // declares word that needs to be found
+                
 const placeholders = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // letters of the alphabet to place randomly across the board
 const tableCells = document.querySelectorAll("td"); // finds all TD elemends
 const resetButton = document.getElementById("resetButton"); // finds reset button
@@ -7,41 +12,103 @@ const submitButton = document.getElementById("submitButton"); // finds submit bu
 const wordToFind1 = document.getElementById("findWord1"); // finds placeholder word1 on left hand side
 const wordToFind2 = document.getElementById("findWord2"); // finds placeholder word2 on left hand side
 const wordToFind3 = document.getElementById("findWord3"); // finds placeholder word2 on left hand side
+const wordToFind4 = document.getElementById("findWord4"); // finds placeholder word2 on left hand side
+const wordToFind5 = document.getElementById("findWord5"); // finds placeholder word2 on left hand side
+const restartButton = document.getElementById("restart"); // finds restart button
 let showWord = document.getElementById("selectedLetters"); // finds text element below table
+
+
+// This code checks if the win condition has been met.
+// if true it will hide the table and display 
+
+let correctWords = 0; // defines number of correct words
+
+function checkWinCondition(){ // checks win condition
+
+    if(correctWords < 5){
+        document.getElementById("winScreen").style.display = "none"; // win screen is disabled
+    }
+    else if(correctWords >= 5){
+        console.log("win")
+         document.getElementById("board").style.display = "none"; // hide table
+        document.getElementById("winScreen").style.display = "block"; // enable win screen
+    }
+}
+checkWinCondition();
+
+function updateCorrectWords(newCount){
+    correctWords = newCount; // uses new count as the counter for correct words
+    checkWinCondition() // calls checkWinCondition function
+}
 
 //generates a random number to be used as an index for choosing a random word
 let wordChooser1 = Math.floor(Math.random() * word.length);
 let wordChooser2 = Math.floor(Math.random() * word.length);
 let wordChooser3 = Math.floor(Math.random() * word.length);
+let wordChooser4 = Math.floor(Math.random() * word.length);
+let wordChooser5 = Math.floor(Math.random() * word.length);
 
 // if both random numbers are the same, regenerate number
-while (wordChooser1 == wordChooser2 || wordChooser1 == wordChooser3){
+
+while (wordChooser1 == wordChooser2 // rerolls word chooser 1
+    || wordChooser1 == wordChooser3
+    || wordChooser1 == wordChooser4 
+    || wordChooser1 == wordChooser5 )
+    {
     wordChooser1 = Math.floor(Math.random() * word.length);
     console.log("re-roll wordChooser1")
 }
 
-while (wordChooser2 == wordChooser1 || wordChooser2 == wordChooser3){
+while (wordChooser2 == wordChooser1 // rerolls word chooser 2
+    || wordChooser2 == wordChooser3 
+    || wordChooser2 == wordChooser4 
+    || wordChooser2 == wordChooser5 )
+    {
     wordChooser2 = Math.floor(Math.random() * word.length);
     console.log("re-roll wordChooser2")
 }
 
-while (wordChooser3 == wordChooser2 || wordChooser3 == wordChooser1){
+while (wordChooser3 == wordChooser1 // rerolls word chooser 3
+    || wordChooser3 == wordChooser2 
+    || wordChooser3 == wordChooser4 
+    || wordChooser3 == wordChooser5)
+    {
     wordChooser3 = Math.floor(Math.random() * word.length);
     console.log("re-roll wordChooser3")
 }
 
+while (wordChooser4 == wordChooser1 // rerolls word chooser 4
+    || wordChooser4 == wordChooser2 
+    || wordChooser4 == wordChooser3 
+    || wordChooser4 == wordChooser5)
+    {
+    wordChooser4 = Math.floor(Math.random() * word.length);
+    console.log("re-roll wordChooser4")
+}
+
+while (wordChooser5 == wordChooser1 // rerolls word chooser 5
+    || wordChooser5 == wordChooser2 
+    || wordChooser5 == wordChooser3 
+    || wordChooser5 == wordChooser4)
+    {
+    wordChooser5 = Math.floor(Math.random() * word.length);
+    console.log("re-roll wordChooser5")
+}
 
 
 //chooses which words to be used in list
 const word1 = word[wordChooser1];
 const word2 = word[wordChooser2];
 const word3 = word[wordChooser3];
+const word4 = word[wordChooser4];
+const word5 = word[wordChooser5];
 
 //places words on the screen's sidebar
 wordToFind1.textContent = word1;
 wordToFind2.textContent = word2;
 wordToFind3.textContent = word3;
-
+wordToFind4.textContent = word4;
+wordToFind5.textContent = word5;
 
 // This section fills the table with random letters
 // simple and effective
@@ -170,8 +237,13 @@ tryPlaceWord(word2);
 console.log(`Word2 "${word2}" placed successfully.`);
 
 tryPlaceWord(word3);
-console.log(`Word2 "${word2}" placed successfully.`);
+console.log(`Word2 "${word3}" placed successfully.`);
 
+tryPlaceWord(word4);
+console.log(`Word2 "${word4}" placed successfully.`);
+
+tryPlaceWord(word5);
+console.log(`Word2 "${word5}" placed successfully.`);
 
 
 // This section of the code is used for selecting the letters
@@ -321,18 +393,19 @@ resetButton.addEventListener("click", () => {
     })
 });
 
-let correctWords = 0;
 
 // submit button
 // on click, check if the correct word was selected
 // performs a reset in both cases
 submitButton.addEventListener("click", () =>{
-    if(selectedCells == word1 || selectedCells == word2 || selectedCells == word3){
+    if(selectedCells == word1 || selectedCells == word2 || selectedCells == word3 || selectedCells == word4 || selectedCells == word5){
+
+        
         correctWords++; //each correct words will increment counter
-        console.log(correctWords);
-    if(correctWords == 3){ // once all words are found, display you win
-        console.log("you win")
-        }
+        updateCorrectWords(correctWords); // updates win condition with counter
+
+
+        //set each correct word in sidebar to correct color
         if(selectedCells == word1){ // if word 1 is selected and correct, change appropriate word in side bar to green background
             wordToFind1.classList.add("activeCorrect");
         }
@@ -342,13 +415,23 @@ submitButton.addEventListener("click", () =>{
         else if(selectedCells == word3){ // if word 3 is selected and correct, change appropriate word in side bar to green background
             wordToFind3.classList.add("activeCorrect");
         }
-        showWord.textContent = `${selectedCells} is correct!!`;
-        origin = null; 
-        selectedCells = "";
+        else if(selectedCells == word4){ // if word 3 is selected and correct, change appropriate word in side bar to green background
+            wordToFind4.classList.add("activeCorrect");
+        }
+        else if(selectedCells == word5){ // if word 3 is selected and correct, change appropriate word in side bar to green background
+            wordToFind5.classList.add("activeCorrect");
+        }
+
+
+        // every cell coordinate that was correct is set to active
         for (let coord in wordCoordinate) { // correct letters that were chosen will stay green on the board
             let toSelect = document.getElementById(wordCoordinate[coord]);
             if (toSelect) toSelect.classList.add("activeCorrect");
         }
+        // resets variables back to original settings
+        showWord.textContent = `${selectedCells} is correct!!`;
+        origin = null; 
+        selectedCells = "";
         wordCoordinate = [];
         isDiagonalTop = false;
         isDiagonalBottom = false;
@@ -356,7 +439,8 @@ submitButton.addEventListener("click", () =>{
         isVerticalTop = false;
         isVerticalBottom = false;
     }
-    else{
+
+    else{ // if answer is incorrect
         showWord.textContent = `${selectedCells} is incorrect`;
         origin = null;
         selectedCells = "";
@@ -367,4 +451,10 @@ submitButton.addEventListener("click", () =>{
         isVerticalBottom = false;
         wordCoordinate = [];
     }
+})
+
+// restarts window
+// can only be seen if win condition is met
+restartButton.addEventListener("click", () =>{
+    window.location.reload();
 })

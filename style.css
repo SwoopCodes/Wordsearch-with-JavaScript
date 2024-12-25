@@ -51,4 +51,22 @@ td:hover{
     float: right;
 }
 
+#winScreen{
+    padding: 1%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    margin: auto;
+    font-size: 2rem;
+    border: 7px, solid, black;
+    border-radius: 15px;
+    max-width: 30%;
+}
 
+#restart{
+    font-size: 2rem;
+}
+
+#smiley{
+    width: 20%;
+    margin-bottom: 2%;
+}
