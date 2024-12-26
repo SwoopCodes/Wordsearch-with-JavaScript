@@ -19,7 +19,7 @@ let showWord = document.getElementById("selectedLetters"); // finds text element
 
 
 // This code checks if the win condition has been met.
-// if true it will hide the table and display 
+// if true it will hide the table and display the win screen
 
 let correctWords = 0; // defines number of correct words
 
@@ -29,9 +29,12 @@ function checkWinCondition(){ // checks win condition
         document.getElementById("winScreen").style.display = "none"; // win screen is disabled
     }
     else if(correctWords >= 5){
-        console.log("win")
-         document.getElementById("board").style.display = "none"; // hide table
+        console.log("you won")
+        document.getElementById("board").style.display = "none"; // hide table
         document.getElementById("winScreen").style.display = "block"; // enable win screen
+        document.getElementById("selectedLetters").style.display = "none"; // hides text bar below board
+        document.getElementById("submitButton").style.display = "none"; // hides submit button
+        document.getElementById("resetButton").style.display = "none"; // hides reset button
     }
 }
 checkWinCondition();
@@ -231,19 +234,14 @@ function tryPlaceWord(word) { // Function to check and place a word
 
 // Place words
 tryPlaceWord(word1);
-console.log(`Word1 "${word1}" placed successfully.`);
 
 tryPlaceWord(word2);
-console.log(`Word2 "${word2}" placed successfully.`);
 
 tryPlaceWord(word3);
-console.log(`Word2 "${word3}" placed successfully.`);
 
 tryPlaceWord(word4);
-console.log(`Word2 "${word4}" placed successfully.`);
 
 tryPlaceWord(word5);
-console.log(`Word2 "${word5}" placed successfully.`);
 
 
 // This section of the code is used for selecting the letters
@@ -440,7 +438,7 @@ submitButton.addEventListener("click", () =>{
         isVerticalBottom = false;
     }
 
-    else{ // if answer is incorrect
+    else{ // if answer is incorrect, resets variables
         showWord.textContent = `${selectedCells} is incorrect`;
         origin = null;
         selectedCells = "";
@@ -450,6 +448,9 @@ submitButton.addEventListener("click", () =>{
         isVerticalTop = false;
         isVerticalBottom = false;
         wordCoordinate = [];
+        tableCells.forEach(cell => {
+            cell.classList.remove("active");
+        })
     }
 })
 

@@ -1,57 +1,75 @@
+body{
+    background-color: #F0BA6F;
+}
 main{ /* Indents main content center*/
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #leftBar{
+    border: solid, 5px, black;
+    background-color: #6ebef0;
+    border-radius: 10px;
+    padding: 1%;
     float: left;
-    margin-left: 4%;
+    margin-left: 10%;
+    margin-top: 1%;
 }
+
 table{ /* adds styling to table*/
-    border-style: solid;
+    background-color: white;
+    border: 4px, solid, black;
     border-collapse: collapse;
     margin-top: 1%;
-    margin-left: 14%;
+    margin-left: 7%;
     float: left;
 }
 
 td{ /* adds styling to table cells*/
-    border-style: solid;
-    padding: 1.5rem;
-    font-size: 2rem;
+    border: 2px, solid, black;
+    padding: 1.4rem;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 td:hover{
     cursor: pointer;
+    background-color: #F0BF88;
 }
 
 .active{
-    background-color: green;
+    background-color: #50C878;
 }
 
 .activeCorrect{
-    background-color: greenyellow;
+    background-color: #26df7f;
 }
 #selectedLetters{
 
     text-align: center;
-    font-size: 2.2rem;
+    font-size: 1.6rem;
 }
 
 #submitButton{
-
-    font-size: 2.2rem;
+    background-color: #6EBEF0;
+    border-radius: 15px;
+    padding: 0.5%;
+    font-size: 1.4rem;
     margin-left: 40%;
     float: left;
 }
 
 #resetButton{
 
-    font-size: 2.2rem;
+    background-color: #6EBEF0;
+    border-radius: 15px;
+    padding: 0.5%;
+    font-size: 1.4rem;
     margin-right: 40%;
     float: right;
 }
 
 #winScreen{
+    background-color: white;
     padding: 1%;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
@@ -63,10 +81,15 @@ td:hover{
 }
 
 #restart{
-    font-size: 2rem;
+    background-color: #6EBEF0;
+    border-radius: 15px;
+    padding: 2%;
+    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 #smiley{
+    
     width: 20%;
     margin-bottom: 2%;
 }
